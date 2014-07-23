@@ -443,11 +443,14 @@ function voronoi.run(sites_list, bounding_edge, minx, miny, maxx, maxy)
 	    voronoi.finishEdges(minx + bounding_edge, miny + bounding_edge, maxx - bounding_edge, maxy - bounding_edge)
 	end
 	
+	local newvertex = {}
 	for i=1, #vertex do
+		newvertex[i] = {x=vertex[i].x, y=vertex[i].y, sites = {}}
 		for j=1, #vertex[i].sites do
 			local c = vertex[i].sites[j]
 			local index = cindex[c.x][c.y]
-			table.insert(sites[index].vertices, {x=vertex[i].x, y=vertex[i].y})
+			table.insert(sites[index].vertices, newvertex[i])
+			table.insert(newvertex[i].sites, sites[index])
 			for j1=1, #vertex[i].sites do
 				if (j ~= j1) and (vertex[i].x >= minx) and (vertex[i].y >= miny) 
 							 and (vertex[i].x <= maxx) and (vertex[i].y <= maxy)then
@@ -462,7 +465,8 @@ function voronoi.run(sites_list, bounding_edge, minx, miny, maxx, maxy)
 		table.sort(sites[i].vertices, function (a, b) return isToTheLeft(sites[i], a, b) end)
 	end 
     
-    return vertex, segments, sites
+    --segments shouldn't be needed, typically
+    return sites, newvertex, segments
 end
 
 return voronoi.run
