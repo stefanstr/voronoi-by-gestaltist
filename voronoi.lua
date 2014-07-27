@@ -26,7 +26,6 @@ Algorithmica 2, 153-174, and its translation to C++ by Matt Brubeck,
 http://www.cs.hmc.edu/~mbrubeck/voronoi.html
 --]]
 
-math.randomseed(os.time())
 
 --- HEAP ---
 
@@ -439,7 +438,7 @@ function voronoi.run(sites_list, bounding_edge, minx, miny, maxx, maxy)
             voronoi.processPoint(e)
         end    
     end
-    if Y1 then
+    if maxy then
 	    voronoi.finishEdges(minx + bounding_edge, miny + bounding_edge, maxx - bounding_edge, maxy - bounding_edge)
 	end
 	
